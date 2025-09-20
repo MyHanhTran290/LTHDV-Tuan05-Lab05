@@ -53,3 +53,61 @@ exports.deleteSupplier = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Hiển thị danh sách supplier
+exports.listSuppliers = async (req, res) => {
+  try {
+    const suppliers = await Supplier.find();
+    res.render("suppliers/index", { suppliers });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+// Hiển thị form thêm
+exports.showAddForm = (req, res) => {
+  res.render("suppliers/new");
+};
+
+// Xử lý thêm
+exports.addSupplier = async (req, res) => {
+  try {
+    const { name, address, phone } = req.body;
+    await Supplier.create({ name, address, phone });
+    res.redirect("/suppliers");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+// Hiển thị form sửa
+exports.showEditForm = async (req, res) => {
+  try {
+    const supplier = await Supplier.findById(req.params.id);
+    res.render("suppliers/edit", { supplier });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+// Xử lý sửa
+exports.editSupplier = async (req, res) => {
+  try {
+    const { name, address, phone } = req.body;
+    await Supplier.findByIdAndUpdate(req.params.id, { name, address, phone });
+    res.redirect("/suppliers");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
+// Xóa
+exports.deleteSupplier = async (req, res) => {
+  try {
+    await Supplier.findByIdAndDelete(req.params.id);
+    res.redirect("/suppliers");
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+

@@ -2,6 +2,13 @@ const express = require("express");
 const router = express.Router();
 const supplierController = require("../controllers/supplierController");
 
+router.get("/", supplierController.listSuppliers);
+router.get("/add", supplierController.showAddForm);
+router.post("/add", supplierController.addSupplier);
+router.get("/edit/:id", supplierController.showEditForm);
+router.post("/edit/:id", supplierController.editSupplier);
+router.get("/delete/:id", supplierController.deleteSupplier);
+
 // GET all suppliers
 router.get("/", supplierController.getSuppliers);
 
@@ -16,6 +23,7 @@ router.put("/:id", supplierController.updateSupplier);
 
 // DELETE supplier
 router.delete("/:id", supplierController.deleteSupplier);
+
 
 module.exports = router;
 /**
